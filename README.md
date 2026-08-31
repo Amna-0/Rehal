@@ -46,6 +46,8 @@ This project was built as part of the Flutter UI Implementation assignment, focu
 | `MediaQuery` | Responsive width/height for images and banners |
 | `Navigator` + `MaterialPageRoute` | Passing city data to the Details screen |
 | `BottomNavigationBar` | Bottom tab bar |
+| `ListView.builder` | Dynamically builds city cards from the model list |
+| `StatefulWidget` + `initState()` | Loads and converts JSON data into model objects on screen load |
  
 ---
  
@@ -105,14 +107,17 @@ All required images exist under `assets/images/`:
 ```
 Rehal/
 ├── assets/
-│   └── images/                    # saudi, riyadh, dhahran, abha, alula, jeddah (+ _d variants)
+│   └── images/
 ├── lib/
-│   ├── main.dart                  # App entry point
-│   └── screens/
-│       ├── home_screen.dart       # Screen 1 — city list
-│       └── details_screen.dart    # Screen 2 — city attractions
+│   ├── data/
+│   │   └── cities_data.dart       # City data in JSON-style format
+│   ├── models/
+│   │   └── city_model.dart        # CityModel with fromJson factory
+│   ├── screens/
+│   │   ├── home_screen.dart       # Screen 1 — city list (StatefulWidget)
+│   │   └── details_screen.dart    # Screen 2 — city attractions
+│   └── main.dart
 ├── pubspec.yaml
-├── pubspec.lock
 └── README.md
 ```
  
@@ -124,7 +129,6 @@ Rehal/
  
 - Wire up the search field to actually filter the city list
 - Make "Favorites" persist selected cities
-- Move city data to a separate JSON file instead of inline `List<Map>` definitions
 - Add Arabic language support with a language toggle button
   
 ---
@@ -134,6 +138,8 @@ Rehal/
 - Widgets compose through **nesting**, not inheritance — each city card is just `Container` → `Column` → `Row`/`Text` stacked together.
 - `Navigator.push` + `MaterialPageRoute` is how data (city name, image, places) travels from Home to Details.
 - `MediaQuery` lets layout react to screen size instead of using fixed pixel values.
+- Separating data (`List<Map>`) from presentation via a `Model` class with a `fromJson` factory constructor keeps the UI code clean and makes the data source easy to swap later (e.g., for a real API).
+- `StatefulWidget` + `initState()` is how data gets loaded once when a screen first builds, before the UI renders.
 
 --- 
 
